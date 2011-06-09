@@ -113,6 +113,10 @@ class HL7::Message
     ret
   end
 
+  def segments
+    @segments
+  end
+
   # modify a segment of the message
   # index:: can be a Range, Fixnum or anything that
   #         responds to to_sym
@@ -378,6 +382,14 @@ class HL7::Message::Segment
     end
   end
 
+  def elements
+    @elements
+  end
+
+  def fields
+    self.class.fields
+  end
+
   def to_info
     "%s: empty segment >> %s" % [ self.class.to_s, @elements.inspect ] 
   end
@@ -590,6 +602,7 @@ class HL7::Message::Segment
   end
 
   def write_field( name, value ) #:nodoc:
+    puts "Adding Field [#{name}, #{value}]"
     idx, field_blk = field_info( name )
     return nil unless idx
 

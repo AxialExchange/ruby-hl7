@@ -1,4 +1,3 @@
-require 'ruby-hl7'
 class HL7::Message::Segment::DG1 < HL7::Message::Segment
   add_field :set_id
   add_field :diagnosis_coding_method

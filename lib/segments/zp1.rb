@@ -1,5 +1,4 @@
 # encoding: UTF-8
-require 'ruby-hl7'
 class HL7::Message::Segment::ZP1 < HL7::Message::Segment
   add_field :notify_private_physician
   add_field :practice_id

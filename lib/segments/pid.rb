@@ -1,5 +1,4 @@
 # encoding: UTF-8
-require 'ruby-hl7'
 class HL7::Message::Segment::PID < HL7::Message::Segment
   weight 1
   add_field :set_id

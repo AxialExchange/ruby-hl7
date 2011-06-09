@@ -1,5 +1,3 @@
-require 'ruby-hl7'
-
 #STF-2 (STAFF ID#) **repeating field**
 #STF-2.1~1 (ID#) = 612345
 #STF-2.5~1 (ID TYPE CODE) = STAFFID

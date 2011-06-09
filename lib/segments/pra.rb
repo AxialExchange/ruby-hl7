@@ -1,5 +1,3 @@
-require 'ruby-hl7'
-
 #PRA-2.1 (PRACTICE ID#) = 95066
 #PRA-2.2 (PRACTICE NAME) = UPTOWN PEDS
 

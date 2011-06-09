@@ -1,5 +1,4 @@
 # encoding: UTF-8
-require 'ruby-hl7'
 class HL7::Message::Segment::IN1 < HL7::Message::Segment
   add_field :set_id
   add_field :insurance_plan_id
