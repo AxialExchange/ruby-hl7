@@ -337,6 +337,8 @@ class HL7::Message::Segment
   attr :element_delim
   attr :item_delim
   attr :segment_weight
+  attr :elements
+  attr :fields
 
   # setup a new HL7::Message::Segment
   # raw_segment:: is an optional String or Array which will be used as the
@@ -380,14 +382,6 @@ class HL7::Message::Segment
       yield self 
       eval( "undef method_missing", blk.binding )
     end
-  end
-
-  def elements
-    @elements
-  end
-
-  def fields
-    self.class.fields
   end
 
   def to_info
@@ -683,7 +677,5 @@ end
 
 # load our segments
 Dir["#{File.dirname(__FILE__)}/segments/*.rb"].each { |ext| load ext }
-# load segment extensions
-Dir["#{File.dirname(__FILE__)}/extensions/*.rb"].each { |ext| load ext }
 
 # vim:tw=78:sw=2:ts=2:et:fdm=marker:

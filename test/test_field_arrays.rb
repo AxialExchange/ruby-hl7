@@ -4,13 +4,12 @@ require '../lib/ruby-hl7'
 
 class BasicNameParsing < Test::Unit::TestCase
   def setup
-    @simple_msh_txt = open( '../test_data/pid_name.hl7' ).readlines
+    @simple_msh_txt = open('../test_data/pid_name.hl7').readlines
   end
 
   def test_read
     msg = HL7::Message.new
     msg.parse @simple_msh_txt
-    puts "MSH => #{msg[:MSH].message_type}"
     assert_equal(msg[:PID].patient_name["family_name"], "ENADTEST")
     assert_equal(msg[:PID].patient_name["given_name"], "INPATIENT")
     assert_equal(msg[:PID].patient_name["middle_name"], "JOHN")

@@ -4,7 +4,7 @@ class HL7::Message::Segment::PID < HL7::Message::Segment
   weight 1
   add_field :set_id
   add_field :patient_id
-  add_field :patient_id_list
+  add_field :patient_id_list, {:format => HL7::Message::DataTypes.CX}
   add_field :alt_patient_id
   add_field :patient_name, {:format => HL7::Message::DataTypes.XPN}
   add_field :mother_maiden_name
@@ -25,7 +25,7 @@ class HL7::Message::Segment::PID < HL7::Message::Segment
   add_field :primary_language
   add_field :marital_status
   add_field :religion
-  add_field :account_number
+  add_field :account_number, {:format => HL7::Message::DataTypes.CX}
   add_field :social_security_num
   add_field :mothers_id
   add_field :ethnic_group
