@@ -8,7 +8,7 @@ class HL7::Message::Segment::MSH < HL7::Message::Segment
   add_field :recv_facility, :idx=>5
   add_field :time, :idx=>6
   add_field :security, :idx=>7
-  add_field :message_type, :idx=>8
+  add_field :message_type, :format => HL7::Message::DataTypes.MSG_TYPE, :idx=>8
   add_field :message_control_id, :idx=>9
   add_field :processing_id, :idx=>10
   add_field :version_id, :idx=>11

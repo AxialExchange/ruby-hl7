@@ -615,7 +615,7 @@ class HL7::Message::Segment
   end
 
   def write_field( name, value ) #:nodoc:
-    idx, field_blk = field_info( name )
+    idx, field_blk, field_format = field_info( name )
     return nil unless idx
 
     if (idx >= @elements.length)
@@ -625,8 +625,25 @@ class HL7::Message::Segment
       @elements += missing
     end
 
-    value = value.first if (value && value.kind_of?(Array) && value.length == 1)
-    value = field_blk.call( value ) if field_blk
+    if value.kind_of?(Hash) and !field_format.nil?
+      builder = {}
+      elem = @elements[idx].split(@item_delim)
+      elem.each_with_index do |val, i|
+        builder[field_format[i]] = elem[i]
+      end
+      value.each_pair do |k, v|
+        builder[k] = v
+      end
+      value = []
+      builder.each_value do |v|
+        value << v
+      end
+      value = value.join("^")
+    else
+      value = value.first if (value && value.kind_of?(Array) && value.length == 1)
+      value = field_blk.call( value ) if field_blk
+    end
+
     @elements[ idx ] = value.to_s
 
   end

@@ -3,6 +3,7 @@ module HL7::Message::DataTypes
   attr_reader :XAD  #Extended Address
   attr_reader :CN   #Composite ID number and name
   attr_reader :XCN  #Extended Composite ID number and name
+  attr_reader :MSG_TYPE #MSH Segment - Message Type (009)
 
   def self.XPN #for HL7 v2.3
     ["family_name", "given_name", "middle_name", "suffix", "prefix", "degree", "name_type_code", "name_representation_code"]
@@ -18,6 +19,10 @@ module HL7::Message::DataTypes
 
   def self.XCN #for HL7 v2.3
     ["id_number", "family_name", "given_name", "middle_name", "suffix", "prefix", "degree", "source_table", "assigning_authority", "name_type_code", "id_check_digit", "check_digit_scheme", "id_type_code", "assigning_facility", "name_representation_code"]
+  end
+
+  def self.MSG_TYPE
+    ["message_type", "trigger_event"]
   end
 
 end
