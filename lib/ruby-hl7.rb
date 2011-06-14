@@ -541,11 +541,12 @@ class HL7::Message::Segment
   # * blk is an optional validation proc which MUST take a parameter
   #   and always return a value for the field (it will be used on read/write
   #   calls)
-  def self.add_field( name, options={}, &blk ) 
+  def self.add_field( name, options={}, &blk )
     options = { :idx =>-1, :blk =>blk}.merge!( options )
     name ||= :id
     namesym = name.to_sym
     @field_cnt ||= 1
+    @component_format = nil
     if options[:idx] == -1
       options[:idx] = @field_cnt # provide default auto-incrementing
     end
@@ -580,29 +581,40 @@ class HL7::Message::Segment
 
   def field_info( name ) #:nodoc:
     field_blk = nil
+    field_format = nil
     idx = name # assume we've gotten a fixnum
     unless name.kind_of?( Fixnum )
       fld_info = self.class.fields[ name ]
       idx = fld_info[:idx].to_i
       field_blk = fld_info[:blk]
+      field_format = fld_info[:format]
     end
 
-    [ idx, field_blk ]
+    [ idx, field_blk, field_format ]
   end
 
   def read_field( name ) #:nodoc:
-    idx, field_blk = field_info( name )
+    idx, field_blk, field_format = field_info( name )
     return nil unless idx
     return nil if (idx >= @elements.length) 
 
     ret = @elements[ idx ]
     ret = ret.first if (ret.kind_of?(Array) && ret.length == 1)
     ret = field_blk.call( ret ) if field_blk
+    if (ret.include? @item_delim) and (!field_format.nil?)
+      component = Hash.new
+      str = ret.split("^")
+      i = 0
+      str.each do
+        component[field_format[i]] = str[i]
+        i += 1
+      end
+      ret = component
+    end
     ret
   end
 
   def write_field( name, value ) #:nodoc:
-    puts "Adding Field [#{name}, #{value}]"
     idx, field_blk = field_info( name )
     return nil unless idx
 
@@ -616,6 +628,7 @@ class HL7::Message::Segment
     value = value.first if (value && value.kind_of?(Array) && value.length == 1)
     value = field_blk.call( value ) if field_blk
     @elements[ idx ] = value.to_s
+
   end
 
   @elements = []
@@ -653,5 +666,7 @@ end
 
 # load our segments
 Dir["#{File.dirname(__FILE__)}/segments/*.rb"].each { |ext| load ext }
+# load segment extensions
+Dir["#{File.dirname(__FILE__)}/extensions/*.rb"].each { |ext| load ext }
 
 # vim:tw=78:sw=2:ts=2:et:fdm=marker:

@@ -1,11 +1,12 @@
 # encoding: UTF-8
+
 class HL7::Message::Segment::PID < HL7::Message::Segment
   weight 1
   add_field :set_id
   add_field :patient_id
   add_field :patient_id_list
   add_field :alt_patient_id
-  add_field :patient_name
+  add_field :patient_name, {:format => HL7::Message::DataTypes.XPN}
   add_field :mother_maiden_name
   add_field :patient_dob
   add_field :admin_sex do |sex|
@@ -17,7 +18,7 @@ class HL7::Message::Segment::PID < HL7::Message::Segment
   end
   add_field :patient_alias
   add_field :race
-  add_field :address
+  add_field :address, {:format => HL7::Message::DataTypes.XAD}
   add_field :country_code
   add_field :phone_home
   add_field :phone_business

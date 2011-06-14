@@ -7,9 +7,9 @@ class HL7::Message::Segment::PV1 < HL7::Message::Segment
   add_field :admission_type
   add_field :preadmit_number
   add_field :prior_location
-  add_field :attending_doctor
-  add_field :referring_doctor
-  add_field :consulting_doctor
+  add_field :attending_doctor, {:format => HL7::Message::DataTypes.XCN}
+  add_field :referring_doctor, {:format => HL7::Message::DataTypes.XCN}
+  add_field :consulting_doctor, {:format => HL7::Message::DataTypes.XCN}
   add_field :hospital_service
   add_field :temporary_location
   add_field :preadmit_indicator
