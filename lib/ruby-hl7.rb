@@ -675,6 +675,9 @@ class HL7::Message::Segment::Default < HL7::Message::Segment
   end
 end
 
+#TODO Find a better way to load the files
+load "segments/data_types"
+
 # load our segments
 Dir["#{File.dirname(__FILE__)}/segments/*.rb"].each { |ext| load ext }
 
