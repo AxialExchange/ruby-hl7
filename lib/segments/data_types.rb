@@ -6,6 +6,7 @@ module HL7::Message::DataTypes
   attr_reader :MSG_TYPE #MSH Segment - Message Type (009)
   attr_reader :CX       #Extended Composite ID with Check Digit
   attr_reader :PL       #Place
+  attr_reader :CE       #Coded Element
 
   def self.XPN #for HL7 v2.3
     ["family_name", "given_name", "middle_name", "suffix", "prefix", "degree", "name_type_code", "name_representation_code"]
@@ -33,6 +34,10 @@ module HL7::Message::DataTypes
 
   def self.PL
     ["point_of_care", "room", "bed", "facility", "location_status", "person_location_type", "building", "floor", "location_description"]
+  end
+
+  def self.CE
+    ["identifier", "text", "name_of_coding_system", "alternate_identifier", "alternate_text", "name_of_alternate_coding_system"]
   end
 
 end
