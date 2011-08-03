@@ -7,3 +7,4 @@ class HL7::Message::Segment::AL1 < HL7::Message::Segment
   add_field :allergy_reaction
   add_field :identification_date
 end
+
