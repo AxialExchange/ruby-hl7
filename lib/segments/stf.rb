@@ -15,17 +15,28 @@
 class HL7::Message::Segment::STF < HL7::Message::Segment
   add_field :ms_id
   add_field :staff_id
-  add_field :name
-  add_field :field_4
-  add_field :field_5
-  add_field :field_6
-  add_field :field_7
-  add_field :field_8
+  add_field :staff_name
+  add_field :staff_type
+  add_field :sex
+  add_field :date_time_of_birth
+  add_field :active_inactive_flag
+  add_field :department
   add_field :hospital_service
   add_field :phone
   add_field :address
-  add_field :field_12
-  add_field :field_13
-  add_field :field_14
+  add_field :institution_activation_date
+  add_field :institution_inactivation_date
+  add_field :backup_person_id
   add_field :email
+  add_field :preferred_method_of_contact
+  add_field :marital_status
+  add_field :job_title
+  add_field :job_code_class
+  add_field :employment_status
+  add_field :additional_insured_on_auto
+  add_field :drivers_license_no
+  add_field :copy_auto_insurance
+  add_field :auto_insurance_expires
+  add_field :date_last_dmv_review
+  add_field :date_next_dmv_review
 end
