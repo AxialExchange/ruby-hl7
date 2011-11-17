@@ -4,7 +4,7 @@ require 'time'
 
 class SpeedParsing < Test::Unit::TestCase
   def setup
-    @msg = open( "./test_data/lotsunknowns.hl7" ).readlines
+    @msg = TestHelper.load_hl7(:lotsunknowns)
   end
 
   def test_large_unknown_segments
