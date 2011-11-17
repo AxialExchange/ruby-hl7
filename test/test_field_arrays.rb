@@ -1,10 +1,8 @@
-$: << '../lib'
-require 'test/unit'
-require '../lib/ruby-hl7'
+require File.dirname(__FILE__) + '/test_helper'
 
 class BasicNameParsing < Test::Unit::TestCase
   def setup
-    @simple_msh_txt = open('../test_data/pid_name.hl7').readlines
+    @simple_msh_txt = TestHelper.load_hl7(:pid_name)
   end
 
   def test_read

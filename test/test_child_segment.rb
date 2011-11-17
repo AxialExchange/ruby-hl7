@@ -1,7 +1,5 @@
 # encoding: UTF-8
-$: << '../lib'
-require 'test/unit'
-require 'ruby-hl7'
+require File.dirname(__FILE__) + '/test_helper'
 
 class ChildSegment < Test::Unit::TestCase
   def setup

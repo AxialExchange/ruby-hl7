@@ -1,8 +1,6 @@
 # encoding: UTF-8
-$: << '../lib'
+require File.dirname(__FILE__) + '/test_helper'
 require 'time'
-require 'test/unit'
-require 'ruby-hl7'
 
 class SpeedParsing < Test::Unit::TestCase
   def setup

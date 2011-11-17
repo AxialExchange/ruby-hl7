@@ -1,13 +1,11 @@
 # encoding: UTF-8
-$: << '../lib'
-require 'test/unit'
-require 'ruby-hl7'
+require File.dirname(__FILE__) + '/test_helper'
 
 class BasicParsing < Test::Unit::TestCase
   def setup
-    @simple_msh_txt = open( './test_data/test.hl7' ).readlines.first
-    @empty_txt = open( './test_data/empty.hl7' ).readlines.first
-    @empty_segments_txt = open( './test_data/empty_segments.hl7' ).readlines.first
+    @simple_msh_txt = TestHelper.load_hl7(:test).first
+    @empty_txt = TestHelper.load_hl7(:empty).first
+    @empty_segments_txt = TestHelper.load_hl7(:empty_segments).first
     @base_msh = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^R03|LAB1003929"
     @base_msh_alt_delims = "MSH$@~\\&|LAB1||DESTINATION||19910127105114||ORU^R03|LAB1003929"
   end
@@ -215,7 +213,7 @@ class BasicParsing < Test::Unit::TestCase
   end
 
   def test_enumerable_parsing
-    test_file = open( './test_data/test.hl7' )
+    test_file = TestHelper.load_hl7(:test,:string)
     assert_not_nil( test_file )
 
     msg = HL7::Message.new( test_file )
