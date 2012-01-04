@@ -1,12 +1,10 @@
 # encoding: UTF-8
-$: << '../lib'
+require File.dirname(__FILE__) + '/test_helper'
 require 'time'
-require 'test/unit'
-require 'ruby-hl7'
 
 class SpeedParsing < Test::Unit::TestCase
   def setup
-    @msg = open( "./test_data/lotsunknowns.hl7" ).readlines
+    @msg = TestHelper.load_hl7(:lotsunknowns)
   end
 
   def test_large_unknown_segments
