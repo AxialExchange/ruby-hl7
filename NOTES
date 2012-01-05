@@ -1,4 +1,4 @@
-== Ruby-HL7 v0.5 Release Notes
+== Ruby-HL7 v0.4.5 Release Notes
  Changes:
    * added NK1 segment
    * added XTN data type
