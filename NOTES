@@ -3,6 +3,8 @@
    * added NK1 segment
    * added XTN data type
    * added XON data type
+   * extended XCN data type
+   * added datatypes to DG1
 
 == Ruby-HL7 v0.4 Release Notes
  Changes:
