@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require File.dirname(__FILE__) + '/test_helper'
 
-class ObxSegment < Test::Unit::TestCase
+class Nk1Segment < Test::Unit::TestCase
   def setup
     @base = "NK1|1|Maria Francis|F^F|201 Happy Lane^^Raleigh^NC^27608^^^^|(919)225-6562|(919)650-6325|E^Emergency Contact||||||Snoopys Hot Dogs||F||||||||||||||||||||||"
   end
