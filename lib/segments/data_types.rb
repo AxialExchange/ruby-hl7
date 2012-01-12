@@ -25,7 +25,7 @@ module HL7::Message::DataTypes
   end
 
   def self.XCN #for HL7 v2.3
-    ["id_number", "family_name", "given_name", "middle_name", "suffix", "prefix", "degree", "source_table", "assigning_authority", "name_type_code", "id_check_digit", "check_digit_scheme", "id_type_code", "assigning_facility", "name_representation_code"]
+    ["id_number", "family_name", "given_name", "middle_name", "suffix", "prefix", "degree", "source_table", "assigning_authority", "name_type_code", "id_check_digit", "check_digit_scheme", "id_type_code", "assigning_facility", "name_representation_code", "name_context", "name_validity_range", "name_assembly_order", "effective_date", "expiration_date", "professional_suffix", "assigning_jurisdiction", "assigning_agency_or_department"]
   end
 
   def self.MSG_TYPE
