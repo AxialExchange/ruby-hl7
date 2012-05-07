@@ -28,7 +28,7 @@ class Dg1Segment < Test::Unit::TestCase
     seg.business_phone_number = "(215)512-5125"
     seg.address = "1 Broad Street^^Quakertown^PA^18951"
     seg.sex = "M"
-    puts seg.inspect
+    # puts seg.inspect
     assert_equal( "1 Broad Street", seg.address["street_address"] )
     assert_equal( "Quakertown", seg.address["city"] )
     assert_equal( "PA", seg.address["state_province"] )
