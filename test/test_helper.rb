@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'test/unit'
 require 'ruby-hl7'
+require 'ruby-debug'
 
 
 module TestHelper

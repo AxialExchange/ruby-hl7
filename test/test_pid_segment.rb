@@ -21,6 +21,31 @@ class PidSegment < Test::Unit::TestCase
         pid.admin_sex = x
       end
     end
-        
+  end
+
+  def test_patient_id_list
+    pid_str = 'PID|||0533132^^^CARY^MR|||||||||||||||79561528^^^^PN'
+    pid = HL7::Message::Segment::PID.new(pid_str)
+
+    patient_id_list = pid.patient_id_list
+
+    assert patient_id_list.is_a?(Hash)
+
+    assert_equal '0533132', patient_id_list['id']
+    assert_equal 'MR', patient_id_list['id_type_code']
+  end
+
+  def test_patient_id_list_repeat
+    pid_str = 'PID|||0533132^^^CARY^MR~79561528^^^CARY^AN|||||||||||||||79561528^^^^PN'
+    pid = HL7::Message::Segment::PID.new(pid_str)
+
+    patient_id_list = pid.patient_id_list
+    # puts pid.patient_id_list.inspect
+
+    assert patient_id_list.is_a?(Array)
+    assert_equal 2, patient_id_list.size
+
+    assert_equal '79561528', patient_id_list.last['id']
+    assert_equal 'AN', patient_id_list.last['id_type_code']
   end
 end

@@ -336,6 +336,7 @@ class HL7::Message::Segment
   attr :segment_parent, true
   attr :element_delim
   attr :item_delim
+  attr :repeat_delim
   attr :segment_weight
   attr :elements
   attr :fields
@@ -346,13 +347,15 @@ class HL7::Message::Segment
   # delims:: an optional array of delimiters, where 
   #               delims[0] = element delimiter
   #               delims[1] = item delimiter
+  #               delims[2] = repeat delimiter
   def initialize(raw_segment="", delims=[], &blk)
     @segments_by_name = {}
     @field_total = 0
     @is_child = false
     
     @element_delim = (delims.kind_of?(Array) && delims.length>0) ? delims[0] : "|"
-    @item_delim = (delims.kind_of?(Array) && delims.length>1) ? delims[1] : "^"
+    @item_delim    = (delims.kind_of?(Array) && delims.length>1) ? delims[1] : "^"
+    @repeat_delim  = (delims.kind_of?(Array) && delims.length>2) ? delims[2] : "~"
 
     if (raw_segment.kind_of? Array)
       @elements = raw_segment
@@ -594,18 +597,40 @@ class HL7::Message::Segment
 
     ret = @elements[ idx ]
     ret = ret.first if (ret.kind_of?(Array) && ret.length == 1)
+
     ret = field_blk.call( ret ) if field_blk
-    if (ret.include? @item_delim) and (!field_format.nil?)
-      component = Hash.new
-      str = ret.split("^")
-      i = 0
-      str.each do
-        component[field_format[i]] = str[i]
-        i += 1
+
+    if ret =~ /#{@repeat_delim}/ && !name.eql?(:enc_chars)
+      field = []
+      ret.split(/#{@repeat_delim}/).each do |r|
+        component = Hash.new
+        str = r.split(@item_delim)
+
+        i = 0
+        str.each do
+          component[field_format[i]] = str[i]
+          i += 1
+        end
+
+        field << component
       end
-      ret = component
+    else
+      field = ret
+      if ret.include?(@item_delim) && !field_format.nil?
+        component = Hash.new
+
+        str = ret.split(@item_delim)
+        i = 0
+
+        str.each do
+          component[field_format[i]] = str[i]
+          i += 1
+        end
+        field = component
+      end
     end
-    ret
+
+    field
   end
 
   def write_field( name, value ) #:nodoc:
