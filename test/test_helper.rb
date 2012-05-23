@@ -1,10 +1,10 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
+require 'rubygems'
 require 'test/unit'
 require 'ruby-hl7'
-require 'ruby-debug'
-
+#require 'ruby-debug'
 
 module TestHelper
   DATA_DIR = File.join(File.dirname(__FILE__), '..', 'test_data')

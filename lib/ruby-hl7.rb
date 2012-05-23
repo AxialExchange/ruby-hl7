@@ -600,18 +600,21 @@ class HL7::Message::Segment
 
     ret = field_blk.call( ret ) if field_blk
 
-    if ret =~ /#{@repeat_delim}/ && !name.eql?(:enc_chars)
+    if ret =~ /#{@repeat_delim}/ && !name.eql?(:enc_chars) && !field_format.nil?
       field = []
       ret.split(/#{@repeat_delim}/).each do |r|
         component = Hash.new
         str = r.split(@item_delim)
 
-        i = 0
-        str.each do
-          component[field_format[i]] = str[i]
-          i += 1
+        begin
+          i = 0
+          str.each do
+            component[field_format[i]] = str[i]
+            i                          += 1
+          end
+        rescue
+          puts "Error: '#{str.inspect}'; field_format '#{field_format.inspect}'"
         end
-
         field << component
       end
     else
@@ -621,7 +624,6 @@ class HL7::Message::Segment
 
         str = ret.split(@item_delim)
         i = 0
-
         str.each do
           component[field_format[i]] = str[i]
           i += 1
