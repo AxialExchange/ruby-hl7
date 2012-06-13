@@ -1,3 +1,11 @@
+== Ruby-HL7 v0.4.7 Release Notes
+ Changes:
+   * fixed exception when parsing a segment field with a repeat char and no identifying field_filter. it now returns entire field
+
+== Ruby-HL7 v0.4.5 Release Notes
+ Changes:
+   * Dunno
+
 == Ruby-HL7 v0.4.5 Release Notes
  Changes:
    * added NK1 segment

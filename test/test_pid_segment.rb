@@ -1,9 +1,9 @@
 # encoding: UTF-8
 require File.dirname(__FILE__) + '/test_helper'
-
+\
 class PidSegment < Test::Unit::TestCase
   def setup
-    @base = "PID|||333||LastName^FirstName^MiddleInitial^SR^NickName||19760228|F||||||||||555. 55|012345678"
+    @base = "PID||MPI436015~4|333||LastName^FirstName^MiddleInitial^SR^NickName||19760228|F||||||||||555. 55|012345678"
   end
 
   def test_admin_sex_limits
@@ -21,6 +21,28 @@ class PidSegment < Test::Unit::TestCase
         pid.admin_sex = x
       end
     end
+  end
+
+  def test_odd_data
+    pid_str = 'PID|ABC~XYZ||0533132^^^CARY^MR|||||||||||||||79561528^^^^PN'
+    pid = HL7::Message::Segment::PID.new(pid_str)
+
+    set_id = pid.set_id
+
+    assert set_id.is_a?(String)
+
+    assert_equal 'ABC~XYZ', set_id
+  end
+
+  def test_patient_id
+    pid_str = 'PID||MPI1234~4|0533132^^^CARY^MR|||||||||||||||79561528^^^^PN'
+    pid = HL7::Message::Segment::PID.new(pid_str)
+
+    patient_id = pid.patient_id
+
+    assert patient_id.is_a?(Array)
+
+    assert_equal 'MPI1234', patient_id.first['id']
   end
 
   def test_patient_id_list
