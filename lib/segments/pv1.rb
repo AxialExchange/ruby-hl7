@@ -3,7 +3,7 @@ class HL7::Message::Segment::PV1 < HL7::Message::Segment
   weight 2
   add_field :set_id
   add_field :patient_class
-  add_field :assigned_location, {:format => HL7::Message::DataTypes.PL}
+  add_field :assigned_patient_location, {:format => HL7::Message::DataTypes.PL}
   add_field :admission_type
   add_field :preadmit_number
   add_field :prior_location
