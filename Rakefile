@@ -2,9 +2,10 @@
 require 'rubygems'
 require 'rake'
 require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rdoc'
+require 'rdoc/task'
 require 'rake/packagetask'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'rake/contrib/sshpublisher'
 require 'rbconfig'
 require 'rubyforge'
@@ -109,7 +110,7 @@ task :cruise => ["test","test:coverage"] do
 end
 
 
-Rake::RDocTask.new do |rd|
+RDoc::Task.new do |rd|
   rd.main = "README"
   rd.rdoc_files.include("README", "LICENSE", "lib/**/*.rb")
   rd.title = "%s (%s) Documentation" % [ full_name, spec.version ]
