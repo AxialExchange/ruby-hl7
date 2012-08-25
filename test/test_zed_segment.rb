@@ -7,7 +7,7 @@ class ZedSegment < Test::Unit::TestCase
 
   def test_initial_read
     zed = HL7::Message::Segment::ZED.new @base
-    assert_equal( "CARDIAC^Cardiac Symptoms", zed.unknown1 )
+    assert_equal( "CARDIAC^Cardiac Symptoms", zed.chief_complaint )
     assert_equal( "", zed.unknown2 )
     assert_equal( "246315", zed.armband_id )
   end
