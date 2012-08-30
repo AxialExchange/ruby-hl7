@@ -1,3 +1,7 @@
+== v0.4.9 Release Notes
+ Changes:
+   * Added name for ZED 1.2 field (hospital unit)
+
 == Ruby-HL7 v0.4.8 Release Notes
  Changes:
    * Added name for ZED 1.1 field (chief complaint)
