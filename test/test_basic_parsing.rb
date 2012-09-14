@@ -332,4 +332,77 @@ class BasicParsing < Test::Unit::TestCase
 
   end
 
+  def test_composite_field_correct_number_of_elements
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^R03|LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({'message_type' => 'ORU', 'trigger_event' => 'R03'}, msg[:MSH].message_type)
+  end
+
+  def test_composite_field_discard_extra_elements
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^R03^FOO^BAR|LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({'message_type' => 'ORU', 'trigger_event' => 'R03'}, msg[:MSH].message_type)
+  end
+
+  def test_composite_field_with_empty_initial_element
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||^R03||LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({'message_type' => '', 'trigger_event' => 'R03'}, msg[:MSH].message_type)
+  end
+
+  def test_composite_field_with_empty_trailing_element
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^||LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({'message_type' => 'ORU'}, msg[:MSH].message_type)
+  end
+
+  def test_composite_field_with_no_separators
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU||LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({'message_type' => 'ORU'}, msg[:MSH].message_type)
+  end
+
+  def test_composite_field_empty
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||||LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({}, msg[:MSH].message_type)
+  end
+
+  def test_composite_field_alternate_delimiters
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^R03|LAB1003929"
+    [
+      %w(* $),
+      %w(, ?),
+      %w(. -),
+    ].each do |element_delim, item_delim|
+      alt_doc = doc.gsub('|', element_delim).gsub('^', item_delim)
+      msg = HL7::Message.parse(alt_doc)
+      assert_equal({'message_type' => 'ORU', 'trigger_event' => 'R03'}, msg[:MSH].message_type)
+    end
+  end
+
+  def test_repeating_field
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^R03~ADT^A04|LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal([{'message_type' => 'ORU', 'trigger_event' => 'R03'}, {'message_type' => 'ADT', 'trigger_event' => 'A04'}], msg[:MSH].message_type)
+  end
+
+  def test_repeating_field_empty_initial
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||~ADT^A04|LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal([{}, {'message_type' => 'ADT', 'trigger_event' => 'A04'}], msg[:MSH].message_type)
+  end
+
+  def test_repeating_field_empty_trailing
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||ORU^R03||LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({'message_type' => 'ORU', 'trigger_event' => 'R03'}, msg[:MSH].message_type)
+  end
+
+  def test_repeating_field_empty
+    doc = "MSH|^~\\&|LAB1||DESTINATION||19910127105114||~||LAB1003929"
+    msg = HL7::Message.parse(doc)
+    assert_equal({}, msg[:MSH].message_type)
+  end
+
 end

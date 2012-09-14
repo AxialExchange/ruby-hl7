@@ -10,7 +10,7 @@ class Nk1Segment < Test::Unit::TestCase
     seg = HL7::Message::Segment::NK1.new @base
     
     assert_equal( "1", seg.set_id )
-    assert_equal( "Maria Francis", seg.name )
+    assert_equal( "Maria Francis", seg.name["family_name"] )
     assert_equal( "F", seg.relationship["identifier"] )
     assert_equal( "F", seg.relationship["text"] )
     assert_equal( "201 Happy Lane", seg.address["street_address"] )
@@ -19,9 +19,9 @@ class Nk1Segment < Test::Unit::TestCase
     assert_equal( "27608", seg.address["zip_postal_code"] )
     assert_equal( "E", seg.contact_role["identifier"] )
     assert_equal( "Emergency Contact", seg.contact_role["text"] )
-    assert_equal( "(919)225-6562", seg.phone_number )
-    assert_equal( "(919)650-6325", seg.business_phone_number )
-    assert_equal( "Snoopys Hot Dogs", seg.organization_name )
+    assert_equal( "(919)225-6562", seg.phone_number["telephone_number"] )
+    assert_equal( "(919)650-6325", seg.business_phone_number["telephone_number"] )
+    assert_equal( "Snoopys Hot Dogs", seg.organization_name["organization_name"] )
     assert_equal( "F", seg.sex )
   end
 

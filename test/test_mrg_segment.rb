@@ -20,7 +20,7 @@ class MrgSegment < Test::Unit::TestCase
     mrg = HL7::Message::Segment::MRG.new(mrg_str)
     
     prior_patient_id = mrg.prior_patient_id
-    assert prior_patient_id.is_a?(String)
-    assert_equal '0533132', prior_patient_id
+    assert prior_patient_id.is_a?(Hash)
+    assert_equal '0533132', prior_patient_id['id']
   end
 end

@@ -591,48 +591,39 @@ class HL7::Message::Segment
   end
 
   def read_field( name ) #:nodoc:
-    idx, field_blk, field_format = field_info( name )
+    idx, field_blk, field_format = field_info(name)
     return nil unless idx
-    return nil if (idx >= @elements.length) 
+    return nil if idx >= @elements.length
 
-    ret = @elements[ idx ]
+    ret = @elements[idx]
     ret = ret.first if (ret.kind_of?(Array) && ret.length == 1)
 
     ret = field_blk.call( ret ) if field_blk
 
-    if ret =~ /#{@repeat_delim}/ && !name.eql?(:enc_chars) && !field_format.nil?
-      field = []
-      ret.split(/#{@repeat_delim}/).each do |r|
-        component = Hash.new
-        str = r.split(@item_delim)
+    if field_format && name != :enc_chars
 
-        begin
-          i = 0
-          str.each do
-            component[field_format[i]] = str[i]
-            i                          += 1
+      # parse a (possibly-repeating) composite field into array of hashes
+      fields = ret.split(@repeat_delim).collect do |part|
+        {}.tap do |field|
+          part.split(@item_delim).each_with_index do |value, i|
+            break if i >= field_format.size
+            field[field_format[i]] = value
           end
-        rescue
-          puts "Error: '#{str.inspect}'; field_format '#{field_format.inspect}'"
         end
-        field << component
       end
-    else
-      field = ret
-      if ret.include?(@item_delim) && !field_format.nil?
-        component = Hash.new
 
-        str = ret.split(@item_delim)
-        i = 0
-        str.each do
-          component[field_format[i]] = str[i]
-          i += 1
-        end
-        field = component
+      # if no repeats, return as (possibly empty) hash
+      if fields.empty?
+        ret = {}
+      elsif fields.length == 1
+        ret = fields.first
+      else
+        ret = fields
       end
+
     end
 
-    field
+    ret
   end
 
   def write_field( name, value ) #:nodoc:
