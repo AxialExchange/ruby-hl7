@@ -643,13 +643,16 @@ class HL7::Message::Segment
       elem.each_with_index do |val, i|
         builder[field_format[i]] = elem[i]
       end
+
       value.each_pair do |k, v|
         builder[k] = v
       end
+
       value = []
-      builder.each_value do |v|
-        value << v
+      field_format.each do |field|
+        value << builder[field] || ''
       end
+      value.pop while value[-1].to_s =~ /^\s$/
       value = value.join("^")
     else
       value = value.first if (value && value.kind_of?(Array) && value.length == 1)
