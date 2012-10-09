@@ -257,6 +257,9 @@ class HL7::Message
     end
 
     ary = post_mllp.split( segment_delim, -1 )
+    if ary.count > 1 && ary[-1].length == 0
+      ary.pop
+    end
     generate_segments( ary )
   end
 

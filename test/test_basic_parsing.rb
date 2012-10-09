@@ -245,6 +245,14 @@ class BasicParsing < Test::Unit::TestCase
     assert_equal( raw, msg.to_mllp )
   end
 
+  def test_parse_mllp_with_extra_linebreak
+    raw = "\x0b%s\r\x1c\r" % @simple_msh_txt
+    msg = HL7::Message.parse( raw )
+    assert_not_nil( msg )
+    assert_equal( @simple_msh_txt, msg.to_hl7 )
+    assert_equal( "\x0b%s\x1c\r" % @simple_msh_txt, msg.to_mllp )
+  end
+
   def test_mllp_output_parse
     msg = HL7::Message.parse( @simple_msh_txt )
     assert_not_nil( msg )
