@@ -648,12 +648,12 @@ class HL7::Message::Segment
       end
 
       value.each_pair do |k, v|
-        builder[k] = v
+        builder[k.to_s] = v
       end
 
       value = []
       field_format.each do |field|
-        value << builder[field] || ''
+        value << builder[field.to_s] || ''
       end
       value.pop while value[-1].to_s =~ /^\s$/
       value = value.join("^")

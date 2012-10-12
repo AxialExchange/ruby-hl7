@@ -14,7 +14,25 @@ class BasicNameParsing < Test::Unit::TestCase
     assert_equal(msg[:PV1].attending_doctor["given_name"], "ROBERT")
   end
 
-  def test_write
+  def test_write_msh
+    msg = HL7::Message.new
+    msg.parse @simple_msh_txt
+
+    assert_equal({"trigger_event" => "A08", 
+                  "message_type"  => "ADT"}, msg[:MSH].message_type)
+
+    msg[:MSH].message_type = {"trigger_event" => "R01", 
+                              "message_type"  => "ORU"}
+    assert_equal({"trigger_event" => "R01", 
+                  "message_type"  => "ORU"}, msg[:MSH].message_type)
+
+    msg[:MSH].message_type = {:trigger_event => "R01", 
+                              :message_type  => "ORU"}
+    assert_equal({"trigger_event" => "R01", 
+                  "message_type"  => "ORU"}, msg[:MSH].message_type)
+  end
+
+  def test_write_segment
     msg = HL7::Message.new
     msg.parse @simple_msh_txt
     assert_equal("ENADTEST", msg[:PID].patient_name["family_name"])

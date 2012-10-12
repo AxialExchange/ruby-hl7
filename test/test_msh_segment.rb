@@ -12,4 +12,24 @@ class MSHSegment < Test::Unit::TestCase
     assert_equal "^~\\&", msh.enc_chars
     assert_equal 'SMSPHM', msh.sending_app
   end
+
+  def test_set_message_type
+    msh = HL7::Message::Segment::MSH.new
+    msh.enc_chars = '^~\\&'
+
+    msh.message_type = {"trigger_event" => "R01", 
+                        "message_type"  => "ORU"}
+    assert_equal({"trigger_event" => "R01", 
+                  "message_type"  => "ORU"}, msh.message_type)
+
+    msh.message_type = {:trigger_event => "A08", 
+                        :message_type  => "ADT"}
+    assert_equal({"trigger_event" => "A08", 
+                  "message_type"  => "ADT"}, msh.message_type)
+
+    msh.message_type = {"trigger_event" => nil, 
+                        "message_type"  => "ACK"}
+    assert_equal({"message_type"  => "ACK"}, msh.message_type)
+
+  end
 end
