@@ -32,6 +32,56 @@ class BasicNameParsing < Test::Unit::TestCase
                   "message_type"  => "ORU"}, msg[:MSH].message_type)
   end
 
+  def test_write_field_unchanged
+    msg = HL7::Message.new
+    msg.parse @simple_msh_txt
+    assert_equal "ENADTEST^INPATIENT^JOHN", msg[:PID].elements[5]
+    msg[:PID].patient_name = msg[:PID].patient_name
+    assert_equal "ENADTEST^INPATIENT^JOHN", msg[:PID].elements[5]
+  end
+
+  def test_write_field_trims_trailing_empty_fields
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {:family_name => 'DOE', :given_name => 'JOHN', :middle_name => 'Q'}
+    assert_equal "PID|||||DOE^JOHN^Q", pid.to_s
+  end
+
+  def test_write_field_preserves_trailing_whitespace_fields
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {:family_name => 'DOE', :given_name => 'JOHN', :middle_name => ' '}
+    assert_equal "PID|||||DOE^JOHN^ ", pid.to_s
+  end
+
+  def test_write_field_preserves_leading_empty_fields
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {:middle_name => 'Q'}
+    assert_equal "PID|||||^^Q", pid.to_s
+  end
+
+  def test_write_field_preserves_internal_empty_fields
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {:family_name => 'DOE', :middle_name => 'Q'}
+    assert_equal "PID|||||DOE^^Q", pid.to_s
+  end
+
+  def test_write_field_preserves_whitespace_only
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {:family_name => ' ', :middle_name => ' '}
+    assert_equal "PID||||| ^^ ", pid.to_s
+  end
+
+  def test_write_field_all_empty
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {}
+    assert_equal "PID|||||", pid.to_s
+  end
+
+  def test_write_field_first_empty
+    pid = HL7::Message::Segment::PID.new
+    pid.patient_name = {:family_name => ''}
+    assert_equal "PID|||||", pid.to_s
+  end
+
   def test_write_segment
     msg = HL7::Message.new
     msg.parse @simple_msh_txt

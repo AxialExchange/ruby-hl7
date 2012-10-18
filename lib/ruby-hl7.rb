@@ -655,7 +655,7 @@ class HL7::Message::Segment
       field_format.each do |field|
         value << builder[field.to_s] || ''
       end
-      value.pop while value[-1].to_s =~ /^\s$/
+      value.pop while !value.empty? && value.last.to_s == ''
       value = value.join("^")
     else
       value = value.first if (value && value.kind_of?(Array) && value.length == 1)
