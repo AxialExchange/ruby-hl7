@@ -43,6 +43,7 @@ Gem::Specification.new do |s|
     "lib/segments/rxe.rb",
     "lib/segments/rxr.rb",
     "lib/segments/stf.rb",
+    "lib/segments/txa.rb",
     "lib/segments/zed.rb",
     "lib/segments/zp1.rb",
     "test_data/adt_a01.hl7",
