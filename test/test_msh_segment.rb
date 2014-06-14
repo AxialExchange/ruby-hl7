@@ -17,17 +17,22 @@ class MSHSegment < Test::Unit::TestCase
     msh = HL7::Message::Segment::MSH.new
     msh.enc_chars = '^~\\&'
 
-    msh.message_type = {"trigger_event" => "R01", 
+    msh.message_type = {"trigger_event" => "R01",
                         "message_type"  => "ORU"}
-    assert_equal({"trigger_event" => "R01", 
+    assert_equal({"trigger_event" => "R01",
                   "message_type"  => "ORU"}, msh.message_type)
 
-    msh.message_type = {:trigger_event => "A08", 
+    msh.message_type = {:trigger_event => "A08",
                         :message_type  => "ADT"}
-    assert_equal({"trigger_event" => "A08", 
+    assert_equal({"trigger_event" => "A08",
                   "message_type"  => "ADT"}, msh.message_type)
 
-    msh.message_type = {"trigger_event" => nil, 
+    msh.message_type = {:trigger_event => "M02",
+                        :message_type  => "MFN"}
+    assert_equal({"trigger_event" => "M02",
+                  "message_type"  => "MFN"}, msh.message_type)
+
+    msh.message_type = {"trigger_event" => nil,
                         "message_type"  => "ACK"}
     assert_equal({"message_type"  => "ACK"}, msh.message_type)
 
